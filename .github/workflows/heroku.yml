@@ -1,0 +1,31 @@
+name: Heroku
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy to Heroku 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "importmap-deployer"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+          docker_build_args: |
+            HD_HTTP_USERNAME
+            HD_HTTP_PASSWORD
+            HD_AWS_ACCESS_KEY_ID
+            HD_AWS_SECRET_ACCESS_KEY
+            HD_PRODUCTION_S3_OBJECT_URL
+            HD_SAFE_URL
+        env:
+          HD_HTTP_USERNAME: ${{ secrets.HTTP_USERNAME }}
+          HD_HTTP_PASSWORD: ${{ secrets.HTTP_PASSWORD }}
+          HD_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          HD_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          HD_PRODUCTION_S3_OBJECT_URL: ${{ secrets.PRODUCTION_S3_OBJECT_URL }}
+          HD_SAFE_URL: ${{ secrets.SAFE_URL }}

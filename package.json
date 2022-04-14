@@ -1,0 +1,8 @@
+{
+  "name": "importmap-deployer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cicerohen/importmap-deployer.git",
+  "author": "Cicero Viana <cicerohen@gmail.com>",
+  "license": "MIT"
+}
