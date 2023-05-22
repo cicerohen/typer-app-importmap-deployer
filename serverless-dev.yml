@@ -2,6 +2,7 @@ org: typer
 app: typer-importmap-deployer
 service: typer-importmap-deployer
 
+useDotenv: true
 frameworkVersion: '3'
 
 plugins:
