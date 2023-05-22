@@ -9,19 +9,19 @@ plugins:
 custom:
   serverless-s3-cleaner:
     buckets:
-      - ${self:service}-${opt:stage,self:provider.stage}
+      - typer-importmap-deployer-dev
 provider:
   name: aws
   stage: dev
   region: 'us-east-1'
   runtime: nodejs14.x
   environment:
-    REGION : ${opt:region,self:provider.region}
-    BUCKET_NAME: ${self:service}-${opt:stage,self:provider.stage}
-    NODE_ENV: ${opt:stage,self:provider.stage}
+    REGION : us-east-1
+    BUCKET_NAME: typer-importmap-deployer-dev
+    NODE_ENV: dev
   iam:
     role:
-      name: ${self:service}-${opt:stage,self:provider.stage}-${opt:region,self:provider.region}-role
+      name: typer-importmap-deployer-role
       statements:
         - Effect: "Allow"
           Action:
@@ -30,8 +30,8 @@ provider:
             - "s3:List*"
             - "s3:Delete*"
           Resource:
-            - arn:aws:s3:::${self:service}-${opt:stage,self:provider.stage}/*
-            - arn:aws:s3:::${self:service}-${opt:stage,self:provider.stage}
+            - arn:aws:s3:::typer-importmap-deployer-dev/*
+            - arn:aws:s3:::typer-importmap-deployer-dev
         - Effect: "Allow"
           Action:
             - execute-api:Invoke
@@ -52,7 +52,7 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: "PublicRead"
-        BucketName:  ${self:service}-${opt:stage,self:provider.stage}
+        BucketName: typer-importmap-deployer-dev
         CorsConfiguration:
           CorsRules:
             - AllowedHeaders:
