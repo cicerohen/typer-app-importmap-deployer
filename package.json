@@ -6,13 +6,16 @@
   "author": "Cicero Viana <cicerohen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "deploy:dev": "serverless deploy --config serverless-dev.yml"
+    "sls:deploy": "serverless deploy --config serverless.yml",
+    "sls:remove": "serverless remove --config serverless.yml"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.272.0",
     "rwlock": "^5.0.0"
   },
   "devDependencies": {
+    "dotenv": "^16.0.3",
+    "serverless": "^3.31.0",
     "serverless-s3-cleaner": "^2.0.2"
   }
 }
