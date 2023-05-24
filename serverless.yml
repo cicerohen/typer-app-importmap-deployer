@@ -10,20 +10,20 @@ plugins:
 custom:
   serverless-s3-cleaner:
     buckets:
-      - typer-importmap-deployer-${opt:stage,self:provider.stage}
+      - typer-importmap-deployer-${env:STAGE}
 
 provider:
   name: aws
-  stage: dev
-  region: 'us-east-1'
+  stage: development
+  region: ${env:REGION}
   runtime: nodejs14.x
+  httpApi:
+    name: typer-importmap-deployer-${env:STAGE}
   environment:
-    REGION: us-east-1
-    BUCKET_NAME: typer-importmap-deployer-${opt:stage,self:provider.stage}
-    NODE_ENV: ${opt:stage,self:provider.stage}
+    BUCKET_NAME: typer-importmap-deployer-${env:STAGE}
   iam:
     role:
-      name: typer-importmap-deployer-${opt:stage,self:provider.stage}-role
+      name: typer-importmap-deployer-${env:STAGE}-role
       statements:
         - Effect: "Allow"
           Action:
@@ -34,8 +34,8 @@ provider:
             - "s3:GetBucketPolicy"
             - "s3:PutBucketPolicy"
           Resource:
-            - arn:aws:s3:::typer-importmap-deployer-${opt:stage,self:provider.stage}/*
-            - arn:aws:s3:::typer-importmap-deployer-${opt:stage,self:provider.stage}
+            - arn:aws:s3:::typer-importmap-deployer-${env:STAGE}/*
+            - arn:aws:s3:::typer-importmap-deployer-${env:STAGE}
         - Effect: "Allow"
           Action:
             - execute-api:Invoke
@@ -57,7 +57,7 @@ resources:
     ImportMapBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: typer-importmap-deployer-${opt:stage,self:provider.stage}
+        BucketName: typer-importmap-deployer-${env:STAGE}
         PublicAccessBlockConfiguration:
           BlockPublicAcls: false
           BlockPublicPolicy: false
@@ -75,7 +75,7 @@ resources:
       Type: AWS::S3::BucketPolicy
       DependsOn: ImportMapBucket
       Properties:
-        Bucket: typer-importmap-deployer-${opt:stage,self:provider.stage}
+        Bucket: typer-importmap-deployer-${env:STAGE}
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -83,4 +83,4 @@ resources:
               Effect: Allow
               Principal: "*"
               Action: s3:GetObject
-              Resource: "arn:aws:s3:::typer-importmap-deployer-${opt:stage,self:provider.stage}/*"
+              Resource: "arn:aws:s3:::typer-importmap-deployer-${env:STAGE}/*"
