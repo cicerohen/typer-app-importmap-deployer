@@ -6,11 +6,23 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-s3-cleaner
+  - serverless-dotenv-plugin
 
 custom:
   serverless-s3-cleaner:
     buckets:
       - typer-importmap-deployer-${env:STAGE}
+  dotenv:
+    exclude:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - NODE_ENV
+    required:
+      env:
+        - STAGE
+        - REGION
+      file: true
 
 provider:
   name: aws

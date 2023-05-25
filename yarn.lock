@@ -3346,6 +3346,15 @@ semver@^7.3.5, semver@^7.3.7, semver@^7.3.8, semver@^7.5.1:
   dependencies:
     lru-cache "^6.0.0"
 
+serverless-dotenv-plugin@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/serverless-dotenv-plugin/-/serverless-dotenv-plugin-6.0.0.tgz#c3e0c2e7fb79641433497085eecc30fe150b5ca0"
+  integrity sha512-8tLVNwHfDO0sBz6+m+DLTZquRk0AZq9rzqk3kphm1iIWKfan9R7RKt4hdq3eQ0kmDoqzudjPYBEXAJ5bUNKeGQ==
+  dependencies:
+    chalk "^4.1.2"
+    dotenv "^16.0.3"
+    dotenv-expand "^10.0.0"
+
 serverless-s3-cleaner@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/serverless-s3-cleaner/-/serverless-s3-cleaner-2.0.2.tgz#a995d96d8b728a8b4abdbc215d52bcba0acd4a4a"

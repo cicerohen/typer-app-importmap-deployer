@@ -24,9 +24,7 @@ const putObject =  (manifest = {}) => {
     Bucket: `${process.env.BUCKET_NAME}`,
     Key: `importmap-${process.env.STAGE}.json`,
     Body: JSON.stringify(manifest),
-    CacheControl: "public, must-revalidate, max-age=0",
     ContentType: "application/importmap+json",
-    ACL: "public-read"
   }));
 };
 
