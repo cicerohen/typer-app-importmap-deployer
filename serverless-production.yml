@@ -1,4 +1,4 @@
-service: typer-importmap-deployer
+service: typer-importmap-deployer-production
 
 useDotenv: true
 
@@ -11,7 +11,7 @@ plugins:
 custom:
   serverless-s3-cleaner:
     buckets:
-      - typer-importmap-deployer-${env:STAGE}
+      - typer-importmap-deployer-production
   dotenv:
     exclude:
       - AWS_ACCESS_KEY_ID
@@ -20,7 +20,6 @@ custom:
       - NODE_ENV
     required:
       env:
-        - STAGE
         - REGION
       file: true
 
@@ -30,12 +29,13 @@ provider:
   region: ${env:REGION}
   runtime: nodejs14.x
   httpApi:
-    name: typer-importmap-deployer-${env:STAGE}
+    name: typer-importmap-deployer-production
   environment:
-    BUCKET_NAME: typer-importmap-deployer-${env:STAGE}
+    STAGE: development
+    BUCKET_NAME: typer-importmap-deployer-production
   iam:
     role:
-      name: typer-importmap-deployer-${env:STAGE}-role
+      name: typer-importmap-deployer-role-production
       statements:
         - Effect: "Allow"
           Action:
@@ -46,8 +46,8 @@ provider:
             - "s3:GetBucketPolicy"
             - "s3:PutBucketPolicy"
           Resource:
-            - arn:aws:s3:::typer-importmap-deployer-${env:STAGE}/*
-            - arn:aws:s3:::typer-importmap-deployer-${env:STAGE}
+            - arn:aws:s3:::typer-importmap-deployer-production/*
+            - arn:aws:s3:::typer-importmap-deployer-production
         - Effect: "Allow"
           Action:
             - execute-api:Invoke
@@ -69,7 +69,7 @@ resources:
     ImportMapBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: typer-importmap-deployer-${env:STAGE}
+        BucketName: typer-importmap-deployer-production
         PublicAccessBlockConfiguration:
           BlockPublicAcls: false
           BlockPublicPolicy: false
@@ -87,7 +87,7 @@ resources:
       Type: AWS::S3::BucketPolicy
       DependsOn: ImportMapBucket
       Properties:
-        Bucket: typer-importmap-deployer-${env:STAGE}
+        Bucket: typer-importmap-deployer-production
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -95,4 +95,4 @@ resources:
               Effect: Allow
               Principal: "*"
               Action: s3:GetObject
-              Resource: "arn:aws:s3:::typer-importmap-deployer-${env:STAGE}/*"
+              Resource: "arn:aws:s3:::typer-importmap-deployer-production/*"
