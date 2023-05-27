@@ -25,13 +25,13 @@ custom:
 
 provider:
   name: aws
-  stage: development
+  stage: production
   region: ${env:REGION}
   runtime: nodejs14.x
   httpApi:
     name: typer-importmap-deployer-production
   environment:
-    STAGE: development
+    STAGE: production
     BUCKET_NAME: typer-importmap-deployer-production
   iam:
     role:
