@@ -1,4 +1,4 @@
-ervice: typer-importmap-deployer-development
+service: typer-importmap-deployer-development
 
 useDotenv: true
 
