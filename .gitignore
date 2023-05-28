@@ -1,6 +1,3 @@
 node_modules
 .serverless/
-.env.development
-.env.development.*
-.env.production
-.env.production.*
+.env

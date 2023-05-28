@@ -1,4 +1,4 @@
-service: typer-importmap-deployer-production
+service: typer-importmap-deployer
 
 useDotenv: true
 
@@ -11,7 +11,7 @@ plugins:
 custom:
   serverless-s3-cleaner:
     buckets:
-      - typer-importmap-deployer-production
+      - typer-importmap-deployer
   dotenv:
     exclude:
       - AWS_ACCESS_KEY_ID
@@ -25,17 +25,16 @@ custom:
 
 provider:
   name: aws
-  stage: production
-  region: ${env:REGION}
+  stage: prod
+  region: ${env:REGION,"us-east-1"}
   runtime: nodejs14.x
   httpApi:
-    name: typer-importmap-deployer-production
+    name: typer-importmap-deployer
   environment:
-    STAGE: production
-    BUCKET_NAME: typer-importmap-deployer-production
+    BUCKET_NAME: typer-importmap-deployer
   iam:
     role:
-      name: typer-importmap-deployer-role-production
+      name: typer-importmap-deployer-role
       statements:
         - Effect: "Allow"
           Action:
@@ -46,8 +45,8 @@ provider:
             - "s3:GetBucketPolicy"
             - "s3:PutBucketPolicy"
           Resource:
-            - arn:aws:s3:::typer-importmap-deployer-production/*
-            - arn:aws:s3:::typer-importmap-deployer-production
+            - arn:aws:s3:::typer-importmap-deployer/*
+            - arn:aws:s3:::typer-importmap-deployer
         - Effect: "Allow"
           Action:
             - execute-api:Invoke
@@ -69,7 +68,7 @@ resources:
     ImportMapBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: typer-importmap-deployer-production
+        BucketName: typer-importmap-deployer
         PublicAccessBlockConfiguration:
           BlockPublicAcls: false
           BlockPublicPolicy: false
@@ -87,7 +86,7 @@ resources:
       Type: AWS::S3::BucketPolicy
       DependsOn: ImportMapBucket
       Properties:
-        Bucket: typer-importmap-deployer-production
+        Bucket: typer-importmap-deployer
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -95,4 +94,4 @@ resources:
               Effect: Allow
               Principal: "*"
               Action: s3:GetObject
-              Resource: "arn:aws:s3:::typer-importmap-deployer-production/*"
+              Resource: "arn:aws:s3:::typer-importmap-deployer/*"

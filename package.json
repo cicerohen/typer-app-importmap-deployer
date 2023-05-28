@@ -6,10 +6,8 @@
   "author": "Cicero Viana <cicerohen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "sls:deploy:development": "serverless deploy --stage development --config serverless-development.yml --verbose",
-    "sls:remove:development": "serverless remove --stage development --config serverless-development.yml --verbose",
-    "sls:deploy:production": "serverless deploy --stage production --config serverless-production.yml --verbose",
-    "sls:remove:production": "serverless remove --stage production --config serverless-production.yml --verbose"
+    "sls:deploy": "serverless deploy --verbose",
+    "sls:remove": "serverless remove --verbose"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.272.0",

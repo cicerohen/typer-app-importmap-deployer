@@ -12,32 +12,32 @@ const getEmptyManifest = () => ({
   scopes: {}
 })
 
-const getObject = () => {
+const getObject = (stage) => {
   return S3.send(new GetObjectCommand({
     Bucket: `${process.env.BUCKET_NAME}`,
-    Key: `importmap-${process.env.STAGE}.json`
+    Key: `importmap-${stage}.json`
   }))
 };
 
-const putObject =  (manifest = {}) => {
+const putObject =  (manifest = {}, stage) => {
   return S3.send(new PutObjectCommand({
     Bucket: `${process.env.BUCKET_NAME}`,
-    Key: `importmap-${process.env.STAGE}.json`,
+    Key: `importmap-${stage}.json`,
     Body: JSON.stringify(manifest),
     ContentType: "application/importmap+json",
   }));
 };
 
-const getManifest = () => new Promise((resolve) => {
-  getObject()
+const getManifest = (stage) => new Promise((resolve) => {
+  getObject(stage)
     .then((response) => {
       return response.Body.transformToString()
     })
     .then((body) => resolve(body))
     .catch((error) => {
       if(error.Code === "NoSuchKey") {
-        putObject(getEmptyManifest())
-        .then(() => getObject())
+        putObject(getEmptyManifest(), stage)
+        .then(() => getObject(stage))
         .then((response) => response.Body.transformToString())
         .then((body) => resolve(body))
         .catch(() => {
@@ -49,13 +49,13 @@ const getManifest = () => new Promise((resolve) => {
     })
 })
 
-const modifyManifest = (service, url) =>  new Promise((resolve, reject) => {
+const modifyManifest = (service, url, stage) =>  new Promise((resolve, reject) => {
   lock.writeLock((release) => {
-    getManifest()
+    getManifest(stage)
     .then((manifest) => {
       const manifestCopy = manifest && JSON.parse(manifest) || getEmptyManifest();
       manifestCopy.imports[service] = url;
-      return putObject(manifestCopy);
+      return putObject(manifestCopy, stage);
     })
     .then(() => {
       release();
@@ -69,8 +69,8 @@ const modifyManifest = (service, url) =>  new Promise((resolve, reject) => {
 });
 
 module.exports.services = async (event) => {
-    const { service, url } = JSON.parse(event.body || "{}");
-    await modifyManifest(service, url);
+    const { service, url, stage } = JSON.parse(event.body || "{}");
+    await modifyManifest(service, url, stage);
     
     return {
       statusCode: 201

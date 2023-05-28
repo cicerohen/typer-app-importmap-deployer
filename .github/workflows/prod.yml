@@ -1,13 +1,13 @@
-name: Deploy to production
+name: Deploy to prod stage
 
 on:
   push:
     branches:
-      - main
       - master
+      - main
 
 env:
-  REGION: ${{ secrets.REGION }}
+  REGION: ${{ vars.REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -15,7 +15,6 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    environment: production
     steps:
     - uses: actions/checkout@v3
     - name: "Install Node"
@@ -24,10 +23,10 @@ jobs:
         node-version: 18.x
     - name: "Install dependencies"
       run: yarn install --frozen-lockfile
-    - name: "Create .env.production file"
+    - name: "Create .env file"
       run: |
-        echo "REGION=${REGION}" > .env.production
-        echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> .env.production
-        echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env.production
+        echo "REGION=${REGION}" > .env
+        echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> .env
+        echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env
     - name: "Run serverless deploy"
-      run: yarn sls:deploy:production
+      run: yarn sls:deploy

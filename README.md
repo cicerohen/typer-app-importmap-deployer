@@ -24,6 +24,6 @@ It's the backend project used by Typer. It is being build using [NestJS](https:/
 ### Development
 
 1.  Access your AWS account and create an IAM user.
-2.  Create a .env.[**stage**] file based on [.env.example](https://github.com/cicerohen/typer-app-importmap-deployer/blob/master/.env.example) and put your AWS credentials on it. The possible values for stage are **development** or **production**
-3.  Deploy the project to the AWS using [Serverless](https://www.serverless.com/):  _yarn sls:deploy:[**stage**]_
-4.  Remove the project from AWS using Serverless: _yarn sls:remove:[**stage**]_
+2.  Create a .env file based on [.env.example](https://github.com/cicerohen/typer-app-importmap-deployer/blob/master/.env.example) and put your AWS credentials on it. The possible values for stage are **dev** or **prod**
+3.  Deploy the project to the AWS using [Serverless](https://www.serverless.com/):  _yarn sls:deploy_
+4.  Remove the project from AWS using Serverless: _yarn sls:remove_
